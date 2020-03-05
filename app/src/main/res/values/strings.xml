@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Kyno Animal Rescue</string>
+
+    <string name="pref_name">My Pref</string>
+    <string name="pref_key">My Key</string>
+
+    <string name="slide1_title">Computer</string>
+    <string name="slide1_des">Computer Repair and Services</string>
+
+    <string name="slide2_title">Laptop</string>
+    <string name="slide2_des">Laptop Repair and Services</string>
+
+    <string name="slide3_title">Mobile</string>
+    <string name="slide3_des">Mobile Repair and Services</string>
+    <string name="skip_intro">SKIP INTRO</string>
+    <string name="next">Next</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

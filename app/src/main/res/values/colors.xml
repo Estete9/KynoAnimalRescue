@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#721100</color>
+    <color name="colorPrimaryDark">#3F0101</color>
+    <color name="colorAccent">#FF5AB0</color>
+    <color name="colorTextPrimary">#212121</color>
+    <color name="colorTextSecondary">#757575</color>
+
+
+
+<!--    <color name="slide1">#3f51b5</color>-->
+<!--    <color name="slide2">#795548</color>-->
+<!--    <color name="slide3">#009688</color>-->
+<!--    -->
+<!--    <color name="active_dots">#fffafa</color>-->
+<!--    <color name="inactive_dots">#83878b</color>-->
+</resources>

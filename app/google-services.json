@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "27006443327",
+    "firebase_url": "https://kyno-animal-rescue.firebaseio.com",
+    "project_id": "kyno-animal-rescue",
+    "storage_bucket": "kyno-animal-rescue.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:27006443327:android:6a5ec938064adffbd13d8a",
+        "android_client_info": {
+          "package_name": "academy.epicprogramming.kynoanimalrescue"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "27006443327-gmlfsovcj9309e17i0egalmqodgj6lvk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYtQl--ajXZy1uzOZoXSNGJLCeyAHUV9s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "27006443327-gmlfsovcj9309e17i0egalmqodgj6lvk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
