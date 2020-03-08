@@ -2,7 +2,9 @@ package academy.epicprogramming.kynoanimalrescue.Intro
 
 import academy.epicprogramming.kynoanimalrescue.R
 import academy.epicprogramming.kynoanimalrescue.Login.SignInActivity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
@@ -14,6 +16,7 @@ import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.activity_intro_slider.*
 
 class IntroSlider : AppCompatActivity() {
+
 
     private val introSliderAdapter =
         IntroSliderAdapter(
@@ -40,6 +43,7 @@ class IntroSlider : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro_slider)
 
+
         introSliderViewPager.adapter = introSliderAdapter
         setupIndicators()
         setCurrentIndicator(0)
@@ -56,6 +60,7 @@ class IntroSlider : AppCompatActivity() {
             if (introSliderViewPager.currentItem + 1 < introSliderAdapter.itemCount) {
                 introSliderViewPager.currentItem += 1
             } else {
+                buttonNextIntro.text = "Continue"
                 Intent(applicationContext, SignInActivity::class.java).also {
                     startActivity(it)
                     finish()
@@ -97,6 +102,8 @@ class IntroSlider : AppCompatActivity() {
         val childCount = indicatorsContainer.childCount
         for (i in 0 until childCount) {
             val imageView = indicatorsContainer[i] as ImageView
+
+
             if (i == index) {
                 imageView.setImageDrawable(
                     ContextCompat.getDrawable(
