@@ -72,8 +72,11 @@ class IntroSlider : AppCompatActivity() {
                 introSliderViewPager.currentItem += 1
             } else {
 
-                buttonNextIntro.text = "Done"
+
                 goToSignIn()
+//            Todo: change the button text to finish when in last sliders
+
+//                buttonNextIntro.text = "Done"
 //                Intent(applicationContext, SignInActivity::class.java).also {
 //                    startActivity(it)
 //                    finish()
