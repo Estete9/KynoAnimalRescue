@@ -6,17 +6,20 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
+import androidx.core.view.size
 import androidx.viewpager2.widget.ViewPager2
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_intro_slider.*
 
 class IntroSlider : AppCompatActivity() {
+    private val TAG = "IntroSlider"
 
     lateinit var preference: SharedPreferences
     val pref_show_intro = "Intro"
@@ -46,6 +49,8 @@ class IntroSlider : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro_slider)
 
+
+
         preference = getSharedPreferences("IntroSlider", Context.MODE_PRIVATE)
         if (!preference.getBoolean(
                 pref_show_intro,
@@ -68,12 +73,24 @@ class IntroSlider : AppCompatActivity() {
         })
 
         buttonNextIntro.setOnClickListener {
-            if (introSliderViewPager.currentItem + 1 < introSliderAdapter.itemCount) {
+
+            Log.d(TAG, introSliderViewPager.currentItem.toString())
+            Log.d(TAG, "introSliderAdapter.itemCount: ${introSliderAdapter.itemCount.toString()}--------------------------------")
+
+
+            if (introSliderViewPager.currentItem + 1 == introSliderAdapter.itemCount -1 ) {
+                buttonNextIntro.text = "Done"
                 introSliderViewPager.currentItem += 1
-            } else {
+            }
+             else {
+                if (introSliderViewPager.currentItem + 1 < introSliderAdapter.itemCount) {
+                    introSliderViewPager.currentItem += 1
 
-
-                goToSignIn()
+                    Log.d(TAG, introSliderViewPager.currentItem.toString())
+                    Log.d(TAG, introSliderAdapter.itemCount.toString())
+                } else {
+                    goToSignIn()
+                }
 //            Todo: change the button text to finish when in last sliders
 
 //                buttonNextIntro.text = "Done"
@@ -136,6 +153,7 @@ class IntroSlider : AppCompatActivity() {
                     ContextCompat.getDrawable(
                         applicationContext,
                         R.drawable.indicator_active
+
                     )
                 )
             } else {
