@@ -13,7 +13,6 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
-import androidx.core.view.size
 import androidx.viewpager2.widget.ViewPager2
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_intro_slider.*
@@ -21,8 +20,8 @@ import kotlinx.android.synthetic.main.activity_intro_slider.*
 class IntroSlider : AppCompatActivity() {
     private val TAG = "IntroSlider"
 
-    lateinit var preference: SharedPreferences
-    val pref_show_intro = "Intro"
+    private lateinit var preference: SharedPreferences
+    private val prefShowIntro = "Intro"
 
     private val introSliderAdapter =
         IntroSliderAdapter(
@@ -53,7 +52,7 @@ class IntroSlider : AppCompatActivity() {
 
         preference = getSharedPreferences("IntroSlider", Context.MODE_PRIVATE)
         if (!preference.getBoolean(
-                pref_show_intro,
+                prefShowIntro,
                 true
             ) && FirebaseAuth.getInstance().currentUser != null
         ) {
@@ -75,7 +74,7 @@ class IntroSlider : AppCompatActivity() {
         buttonNextIntro.setOnClickListener {
 
             Log.d(TAG, introSliderViewPager.currentItem.toString())
-            Log.d(TAG, "introSliderAdapter.itemCount: ${introSliderAdapter.itemCount.toString()}--------------------------------")
+            Log.d(TAG, "introSliderAdapter.itemCount: ${introSliderAdapter.itemCount}--------------------------------")
 
 
             if (introSliderViewPager.currentItem + 1 == introSliderAdapter.itemCount -1 ) {
@@ -91,34 +90,23 @@ class IntroSlider : AppCompatActivity() {
                 } else {
                     goToSignIn()
                 }
-//            Todo: change the button text to finish when in last sliders
-
-//                buttonNextIntro.text = "Done"
-//                Intent(applicationContext, SignInActivity::class.java).also {
-//                    startActivity(it)
-//                    finish()
-//                }
 
             }
         }
 
         textSkipIntro.setOnClickListener {
             goToSignIn()
-//            Intent(applicationContext, SignInActivity::class.java).also {
-//                startActivity(it)
-//                finish()
-//            }
         }
 
 
     }
 
-    fun goToSignIn() {
+    private fun goToSignIn() {
         Intent(applicationContext, SignInActivity::class.java).also {
             startActivity(it)
             finish()
             val editor = preference.edit()
-            editor.putBoolean(pref_show_intro, false)
+            editor.putBoolean(prefShowIntro, false)
             editor.apply()
         }
     }

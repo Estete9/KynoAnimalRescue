@@ -18,6 +18,6 @@ class SplashScreen : AppCompatActivity() {
             val intent = Intent(this, IntroSlider::class.java)
             startActivity(intent)
             finish()
-        }, 3500)
+        }, 3300)
     }
 }
