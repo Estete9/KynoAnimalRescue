@@ -2,6 +2,7 @@ package academy.epicprogramming.kynoanimalrescue.Adapter
 
 import academy.epicprogramming.kynoanimalrescue.Model.User
 import academy.epicprogramming.kynoanimalrescue.R
+import academy.epicprogramming.kynoanimalrescue.fragments.ProfileFragment
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.NonNull
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -47,6 +49,17 @@ class UserAdapter(
         holder.userNameTextView.text = user.getUsername()
 
         checkFollowingStatus(user.getUID(), holder.followButton)
+
+        holder.itemView.setOnClickListener(
+            View.OnClickListener {
+                val pref = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit()
+                pref.putString("profileId", user.getUID())
+                pref.apply()
+
+                (mContext as FragmentActivity).supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, ProfileFragment()).commit()
+            })
+
 
         holder.followButton.setOnClickListener {
             if (holder.followButton.text.toString() == "Follow") {
@@ -110,7 +123,7 @@ class UserAdapter(
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.child(uid).exists()) {
                     followButton.text = "Following"
-                }else{
+                } else {
                     followButton.text = "Follow"
                 }
             }
