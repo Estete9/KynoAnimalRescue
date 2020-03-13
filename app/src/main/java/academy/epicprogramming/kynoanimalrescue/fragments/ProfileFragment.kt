@@ -167,9 +167,9 @@ class ProfileFragment : Fragment() {
                     val user = dataSnapshot.getValue<User>(User::class.java)
                     Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile)
                         .into(view?.profile_image_fragment)
-                    view?.profile_fragment_username?.text = user!!.getUsername()
-                    view?.full_name_profile_frag?.text = user!!.getFullname()
-                    view?.bio_profile_frag?.text = user!!.getBio()
+                    view?.profile_fragment_username?.text = user.getUsername()
+                    view?.full_name_profile_frag?.text = user.getFullname()
+                    view?.bio_profile_frag?.text = user.getBio()
                 }
             }
 
