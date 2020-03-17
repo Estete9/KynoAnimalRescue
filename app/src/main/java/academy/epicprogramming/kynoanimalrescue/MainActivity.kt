@@ -4,6 +4,7 @@ import academy.epicprogramming.kynoanimalrescue.fragments.HomeFragment
 import academy.epicprogramming.kynoanimalrescue.fragments.NotificationsFragment
 import academy.epicprogramming.kynoanimalrescue.fragments.ProfileFragment
 import academy.epicprogramming.kynoanimalrescue.fragments.SearchFragment
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.nav_add_post -> {
+                    item.isChecked = false
+                    startActivity(Intent(this@MainActivity, AddPostActivity::class.java))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.nav_notifications -> {
@@ -33,9 +36,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_profile -> {
                     moveToFragment(ProfileFragment())
                     return@OnNavigationItemSelectedListener true
-//                    val intent = Intent(this@MainActivity, AccountSettingsActivity::class.java)
-////                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-//                    startActivity(intent)
                 }
             }
             false

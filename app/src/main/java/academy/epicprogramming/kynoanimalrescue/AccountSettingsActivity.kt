@@ -1,6 +1,8 @@
 package academy.epicprogramming.kynoanimalrescue
 
+import academy.epicprogramming.kynoanimalrescue.Login.SignInActivity
 import academy.epicprogramming.kynoanimalrescue.Model.User
+import academy.epicprogramming.kynoanimalrescue.fragments.HomeFragment
 import academy.epicprogramming.kynoanimalrescue.fragments.ProfileFragment
 import android.app.Activity
 import android.app.ProgressDialog
@@ -48,7 +50,7 @@ class AccountSettingsActivity : AppCompatActivity() {
         logout_btn.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
 
-            val intent = Intent(this@AccountSettingsActivity, ProfileFragment::class.java)
+            val intent = Intent(this@AccountSettingsActivity, SignInActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             finish()
@@ -56,7 +58,7 @@ class AccountSettingsActivity : AppCompatActivity() {
 
         close_profile_btn.setOnClickListener {
 
-            val intent = Intent(this@AccountSettingsActivity, ProfileFragment::class.java)
+            val intent = Intent(this@AccountSettingsActivity, HomeFragment::class.java)
             startActivity(intent)
             finish()
         }
