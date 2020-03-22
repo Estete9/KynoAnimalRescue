@@ -11,6 +11,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -37,8 +39,7 @@ class AccountSettingsActivity : AppCompatActivity() {
     private var storageProfilePictureRef: StorageReference? = null
 
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_settings)
 
@@ -58,8 +59,8 @@ class AccountSettingsActivity : AppCompatActivity() {
 
         close_profile_btn.setOnClickListener {
 
-            val intent = Intent(this@AccountSettingsActivity, HomeFragment::class.java)
-            startActivity(intent)
+//            val intent = Intent(this@AccountSettingsActivity, HomeFragment::class.java)
+//            startActivity(intent)
             finish()
         }
 
@@ -86,8 +87,7 @@ class AccountSettingsActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE  &&  resultCode == Activity.RESULT_OK  &&  data != null)
-        {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
             val result = CropImage.getActivityResult(data)
             imageUri = result.uri
             profile_image_view_profile_frag.setImageURI(imageUri)
@@ -149,9 +149,10 @@ class AccountSettingsActivity : AppCompatActivity() {
         }
 
     }
+
     private fun userInfo() {
         val usersRef =
-            FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.uid)
+            FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser.uid)
         usersRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -230,51 +231,49 @@ class AccountSettingsActivity : AppCompatActivity() {
                 var uploadTask: StorageTask<*>
                 uploadTask = fileRef.putFile(imageUri!!)
 
-                uploadTask.continueWithTask(Continuation <UploadTask.TaskSnapshot, Task<Uri>>{ task ->
-                    if (!task.isSuccessful)
-                    {
+                uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+                    if (!task.isSuccessful) {
                         task.exception?.let {
                             throw it
                             progressDialog.dismiss()
                         }
                     }
                     return@Continuation fileRef.downloadUrl
-                }).addOnCompleteListener (OnCompleteListener<Uri> {task ->
-                    if (task.isSuccessful)
-                    {
+                }).addOnCompleteListener(OnCompleteListener<Uri> { task ->
+                    if (task.isSuccessful) {
                         val downloadUrl = task.result
                         myUrl = downloadUrl.toString()
 
                         val ref = FirebaseDatabase.getInstance().reference.child("Users")
 
-                            val userMap = HashMap<String, Any>()
-                            userMap["fullname"] =
-                                full_name_profile_frag.text.toString().toLowerCase()
-                            userMap["username"] = username_profile_frag.text.toString()
-                            userMap["bio"] = bio_profile_frag.text.toString()
-                            userMap["image"] = myUrl
+                        val userMap = HashMap<String, Any>()
+                        userMap["fullname"] =
+                            full_name_profile_frag.text.toString().toLowerCase()
+                        userMap["username"] = username_profile_frag.text.toString()
+                        userMap["bio"] = bio_profile_frag.text.toString()
+                        userMap["image"] = myUrl
 
-                            ref.child(firebaseUser.uid).updateChildren(userMap)
+                        ref.child(firebaseUser.uid).updateChildren(userMap)
 
-                            Toast.makeText(
-                                    this,
-                                    "Account information successfully updated",
-                                    Toast.LENGTH_LONG
-                                )
-                                .show()
+                        Toast.makeText(
+                                this,
+                                "Account information successfully updated",
+                                Toast.LENGTH_LONG
+                            )
+                            .show()
 
-                            val intent =
-                                Intent(this@AccountSettingsActivity, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
+                        val intent =
+                            Intent(this@AccountSettingsActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
 
-                            progressDialog.dismiss()
+                        progressDialog.dismiss()
 
-                        } else {
-                            progressDialog.dismiss()
-                        }
-
+                    } else {
+                        progressDialog.dismiss()
                     }
+
+                }
                 )
             }
         }
