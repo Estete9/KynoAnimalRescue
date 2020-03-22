@@ -1,10 +1,14 @@
 package academy.epicprogramming.kynoanimalrescue
 
+import academy.epicprogramming.kynoanimalrescue.Adapter.CommentAdapter
+import academy.epicprogramming.kynoanimalrescue.Model.Comment
 import academy.epicprogramming.kynoanimalrescue.Model.User
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -20,16 +24,32 @@ class CommentsActivity : AppCompatActivity() {
     private var postId = ""
     private var publisherId = ""
 
+    private var commentsAdapter: CommentAdapter? = null
+    private var commentList: MutableList<Comment>? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comments)
+
+        var recyclerView: RecyclerView = findViewById(R.id.recycler_view_comments)
+        val linearLayoutManager: LinearLayoutManager = LinearLayoutManager(this)
+        linearLayoutManager.reverseLayout = true
+        recyclerView.layoutManager = linearLayoutManager
 
         val intent = intent
         postId = intent.getStringExtra("postId")
         publisherId = intent.getStringExtra("publisherId")
         firebaseUser = FirebaseAuth.getInstance().currentUser
 
+        commentList = ArrayList()
+        commentsAdapter = CommentAdapter(this, commentList)
+        recyclerView.adapter = commentsAdapter
+
         userInfo()
+        readComments()
+        getPostImage()
+
         post_comment.setOnClickListener(View.OnClickListener {
             if (add_comment.text.toString() == "") {
                 Toast.makeText(this@CommentsActivity, "enter a comment first", Toast.LENGTH_LONG)
@@ -55,6 +75,29 @@ class CommentsActivity : AppCompatActivity() {
 
     }
 
+    private fun getPostImage() {
+        val postRef =
+            FirebaseDatabase.getInstance().reference
+                .child("Posts")
+                .child(postId)
+                .child("postimage")
+
+        postRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+                    val image = dataSnapshot.value.toString()
+                    Picasso.get().load(image).placeholder(R.drawable.profile)
+                        .into(post_image_comments)
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+            }
+        })
+    }
+
+
     private fun userInfo() {
         val usersRef =
             FirebaseDatabase.getInstance().reference
@@ -76,4 +119,25 @@ class CommentsActivity : AppCompatActivity() {
         })
     }
 
+    private fun readComments() {
+        val commentsRef = FirebaseDatabase.getInstance().reference
+            .child("Comments")
+            .child(postId)
+        commentsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()) {
+                    commentList!!.clear()
+                    for (snapshot in p0.children) {
+                        val comment = snapshot.getValue(Comment::class.java)
+                        commentList!!.add(comment!!)
+                    }
+                    commentsAdapter!!.notifyDataSetChanged()
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+        })
+    }
 }
